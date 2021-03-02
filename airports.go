@@ -40,7 +40,7 @@ func main() {
 		iata := record[3]
 		point := record[4]
 		lat, lon := calculatePosition(point)
-		_, err1 := fmt.Fprintf(file1, "%v:%v:%v:%v:%v:%v\n", item, itemLabel, icao, iata, lat, lon)
+		_, err1 := fmt.Fprintf(file1, "%v|%v|%v|%v|%v|%v\n", item, itemLabel, icao, iata, lat, lon)
 		if err1 != nil {
 			log.Fatal(err1)
 		}
