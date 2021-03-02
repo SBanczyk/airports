@@ -14,6 +14,12 @@ func main() {
 	if f != nil {
 		log.Fatal(f)
 	}
+	file1, f1 := os.Create("airports.db")
+	if f1 != nil {
+		log.Fatal(f1)
+	}
+	defer file1.Close()
+
 	r := csv.NewReader(file)
 	flaga := false
 	for {
@@ -32,7 +38,11 @@ func main() {
 		point := record[1]
 		iata := record[2]
 		lat, lon := calculatePosition(point)
-		fmt.Printf("ICAO:%s | IATA: %s | Position:%s %s \n", icao, iata, lat, lon)
+		_, err1 := fmt.Fprintf(file1, "ICAO: %v IATA: %v LAT: %v LON %v\n", icao, iata, lat, lon)
+		if err1 != nil {
+			log.Fatal(err1)
+		}
+
 	}
 }
 func calculatePosition(point string) (string, string) {
