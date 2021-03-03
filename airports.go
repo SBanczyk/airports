@@ -1,5 +1,4 @@
 package main
-
 import (
 	"encoding/csv"
 	"fmt"
@@ -9,7 +8,6 @@ import (
 	"strings"
 	"net/http"
 )
-
 func main() {
 	resp, err := http.Get("http://localhost:8080/dir/query.csv")
 	if err != nil {
@@ -40,12 +38,14 @@ func main() {
 		icao := record[2]
 		iata := record[3]
 		point := record[4]
+		if len(iata) !=3 {
+			iata=""
+		}
 		lat, lon := calculatePosition(point)
 		_, err1 := fmt.Fprintf(file1, "%v|%v|%v|%v|%v|%v\n", item, itemLabel, icao, iata, lat, lon)
 		if err1 != nil {
 			log.Fatal(err1)
 		}
-
 	}
 }
 func calculatePosition(point string) (string, string) {
@@ -55,5 +55,4 @@ func calculatePosition(point string) (string, string) {
 	position := point[6:strings.Index(point, ")")]
 	latlon := strings.Split(position, " ")
 	return latlon[1], latlon[0]
-
 }
