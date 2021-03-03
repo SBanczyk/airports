@@ -7,20 +7,21 @@ import (
 	"log"
 	"os"
 	"strings"
+	"net/http"
 )
 
 func main() {
-	file, f := os.Open("query.csv")
-	if f != nil {
-		log.Fatal(f)
+	resp, err := http.Get("http://localhost:8080/dir/query.csv")
+	if err != nil {
+		log.Fatal(err)
 	}
+	defer resp.Body.Close()
+	r := csv.NewReader(resp.Body)
 	file1, f1 := os.Create("airports.db")
 	if f1 != nil {
 		log.Fatal(f1)
 	}
 	defer file1.Close()
-
-	r := csv.NewReader(file)
 	flaga := false
 	for {
 		record, err := r.Read()
